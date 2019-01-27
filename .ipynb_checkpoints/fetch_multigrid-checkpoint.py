@@ -67,7 +67,7 @@ def get_data(url):
     dataset = xr.open_dataset(url)
     locs = get_location()
     dataframes = []
-    for loc in locs:
+    for loc in locs[0:10]:
         sitedata = dataset.sel(lon=float(loc[1]), lat=float(loc[0]), method='nearest')
         df = sitedata.htsgwsfc.to_dataframe()
         df['perpwsfc'] = sitedata.perpwsfc.data
@@ -82,9 +82,10 @@ def get_data(url):
 
 
 def main():
-    pool = Pool(8) # or whatever your hardware can support
+    pool = Pool(4) # or whatever your hardware can support
     urls = build_urls()
     dfs = pool.map(get_data,  urls)
-    data = pd.concat(dfs)
-    return data
+    return dfs
 
+if __name__ == '__main__':
+    main()
