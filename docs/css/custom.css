@@ -1,0 +1,21 @@
+img{
+    height: 200px;
+    margin: 10px;
+}
+
+.colored-header{
+    background-color: #e3ebee;
+    margin-bottom: 30px;
+}
+
+.circle{
+    width:30px;
+    height:30px;
+    background: #eee;
+    padding: 0px 11px 0px 11px;
+    border-radius: 100%;
+}
+
+.step-detail{
+    margin-left: 45px;
+}

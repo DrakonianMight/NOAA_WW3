@@ -26,14 +26,25 @@ import fetch_online_des_waves
 
 
 def build_urls():
-    date = dt.datetime.strftime(dt.datetime.utcnow() - dt.timedelta(days=1), "%Y%m%d")
+    prevdate = dt.datetime.strftime(dt.datetime.utcnow() - dt.timedelta(days=1), "%Y%m%d")
+    date = dt.datetime.strftime(dt.datetime.utcnow(), "%Y%m%d")
     baseurl = 'http://nomads.ncep.noaa.gov:9090/dods/wave/mww3/'
-    runs = ['_00z','_06z','_12z','_18z']
+    runs = ['00','06','12','18']
     name = """/multi_1.glo_30mext"""
     
+    yesterdays = []
+    todays = []
+    for t in runs:
+        if (dt.datetime.utcnow().hour - 6) > int(t):
+            todays.append(t)
+        else:
+            yesterdays.append(t)
+    
     urls = []
-    for r in runs:
-        urls.append(baseurl+date+name+date+r)
+    for r in yesterdays:
+        urls.append(baseurl+prevdate+name+prevdate+'_'+str(r)+'z')
+    for r in todays:
+        urls.append(baseurl+date+name+date+'_'+str(r)+'z')
     return urls
 
 
@@ -67,7 +78,7 @@ def get_data(url):
     dataset = xr.open_dataset(url)
     locs = get_location()
     dataframes = []
-    for loc in locs[0:10]:
+    for loc in locs:
         sitedata = dataset.sel(lon=float(loc[1]), lat=float(loc[0]), method='nearest')
         df = sitedata.htsgwsfc.to_dataframe()
         df['perpwsfc'] = sitedata.perpwsfc.data

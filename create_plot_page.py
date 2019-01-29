@@ -59,8 +59,8 @@ def plot_bokeh(site_data):
     for fore in site_data[1:-1]:
         p.line(fore.index, y = fore['htsgwsfc'], line_alpha=0.25, line_dash='dashed')
 
-    #plotf =p.line(x = site_data[0].index,y = site_data[0][0]['htsgwsfc'], color = 'blue',legend='Forecast')
-    #p.add_tools(HoverTool(renderers=[plotf], tooltips=[("Hm0","@y")],mode='vline'))
+    plotf =p.line(x = site_data[-1].index,y = site_data[-1]['htsgwsfc'], color = 'blue',legend='Recent Forecast')
+    p.add_tools(HoverTool(renderers=[plotf], tooltips=[("Hm0","@y")],mode='vline'))
     plota = p.line(site_data[0].index, pd.to_numeric(site_data[0]['Hsig']), color = 'green',legend='Actual')
     p.add_tools(HoverTool(renderers=[plota], tooltips=[("Hsig","@y")],mode='vline'))
     now_line = Span(location=datetime.datetime.now(),dimension='height', line_color='red',line_dash='dashed', line_width=2)
