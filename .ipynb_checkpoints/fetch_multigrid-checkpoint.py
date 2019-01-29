@@ -84,6 +84,7 @@ def get_data(url):
         df['perpwsfc'] = sitedata.perpwsfc.data
         df['dirpwsfc'] = sitedata.dirpwsfc.data
         df['site'] = loc[-1]
+        df.index = df.index + pd.Timedelta(hours = 10)
         dataframes.append(df)
     data = pd.concat(dataframes)
     return data

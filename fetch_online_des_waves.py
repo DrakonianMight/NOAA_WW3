@@ -16,7 +16,7 @@ import pandas as pd
 
 # In[49]:
 
-def get_waves():
+def get_waves(utctime= False):
     """Retrieve wave data from the Open data portal"""
     r = requests.get("https://data.qld.gov.au/api/action/datastore_search?resource_id=2bbef99e-9974-49b9-a316-57402b00609c&limit=20000")
     f = r.json()  
@@ -39,6 +39,9 @@ def get_waves():
     
     datadf = datadf.loc[fewago.strftime("%Y-%m-%d"): now.strftime("%Y-%m-%d")]
     datadf = datadf[~(datadf[['Tp','Hsig','Tz']] < -1).any(axis=1)]
+
+    if utctime == True:
+    	datadf.index = datadf.index - pd.timedelta(hours = 10)
     
     datadf.sort_index()
     return datadf

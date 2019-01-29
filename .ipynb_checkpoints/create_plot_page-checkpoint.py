@@ -107,7 +107,11 @@ def generate_report():
                   <p>Data sourced from &copy; Queensland Government and &copy; National Oceanographic and Atmospheric Administration 2019</p> \n
                   <p>A comparison of forecast data from the NOAA's multigrid wave model and wave monitoring stations from Queensland Government</p> \n
                 </div>\n
-                
+                <div class="container">\n
+                  <h3>Plot Explanation:</h3>\n
+                    <p>The plots contain the measured wave height (green) recent forecast (solid blue) and the previous 3 forecasts (light blue)</p>\n
+                    <p>The measured wave height uses the significant wave height estimated as Hsig (the highest 1/3 waves), the forecast is calculated as Hm0 (from the wave spectra)</p>\n
+                </div>\n
             </body>\n"""
     html.write(begin)
     bokeh_setup = """<link
@@ -126,7 +130,7 @@ def generate_report():
     size = """<style type="text/css">
     .plots {
         height: 35%;
-        width: 65%;
+        width: 75%;
         margin: auto;
     }</style>"""
     
