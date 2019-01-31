@@ -78,6 +78,37 @@ def plot_bokeh(site_data):
     script, div = components(p)
     return (script, div)
 
+def plot_bokeh_per(site_data):
+    """generate a plot object based on a list of forecasts and actuals for a location"""
+    print(site_data[0].iloc[0,1])
+    sitename = site_data[0].iloc[0,1]
+    
+    p = figure(x_axis_type="datetime", plot_height = 500, plot_width = 1000, title=sitename )
+    p.sizing_mode = 'scale_width'
+    
+    for fore in site_data[1:-1]:
+        p.line(fore.index, y = fore['perpwsfc'], line_alpha=0.25, line_dash='dashed', color = 'orange')
+
+    plotf =p.line(x = site_data[-1].index,y = site_data[-1]['perpwsfc'], color = 'orange',legend='Forecast')
+    p.add_tools(HoverTool(renderers=[plotf], tooltips=[("T02","@y")],mode='vline'))
+    plota = p.line(site_data[0].index, pd.to_numeric(site_data[0]['Tz']), color = 'pink',legend='Actual')
+    p.add_tools(HoverTool(renderers=[plota], tooltips=[("Tz","@y")],mode='vline'))
+    now_line = Span(location=datetime.datetime.now(),dimension='height', line_color='red',line_dash='dashed', line_width=2)
+    p.add_layout(now_line)
+
+    
+    p.yaxis.axis_label = "Wave Period (Seconds)"
+    
+    p.legend.location = "top_left"
+    p.legend.click_policy="hide"
+
+    from bokeh.resources import CDN
+    from bokeh.embed import file_html, components
+    #fig = file_html(p, CDN)
+    script, div = components(p)
+    show(p)
+    return (script, div)
+
 
 def generate_report():
     """Takes the wb and forecast data and generates a html report based on the plots"""
@@ -86,6 +117,7 @@ def generate_report():
     site_data = get_data()
     for d in site_data:
         plots.append(plot_bokeh(d))
+        plots.append(plot_bokeh_per(d))
     
     #name = 'AUSWAVE Forecast Report ' + datetime.datetime.now().strftime("%Y-%m-%d_%H")+'.html'
     name = 'NOAA_Forecast_Report_online.html'
@@ -94,7 +126,7 @@ def generate_report():
     begin = """<!DOCTYPE html>\n
                 <html lang="en">\n
                 <head>\n
-                  <title>Wave Height Plots</title>\n
+                  <title>Wave Information</title>\n
                   <meta charset="utf-8">\n
               <meta name="viewport" content="width=device-width, initial-scale=1">\n
               <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">\n
@@ -103,7 +135,7 @@ def generate_report():
             </head>\n
             <body>\n
                 <div class="container">\n
-                  <h1>Forecast and Actual Signficant Wave Height</h1>\n
+                  <h1>Forecast and Actual Wave Information</h1>\n
                   <p>Data sourced from &copy; Queensland Government and &copy; National Oceanographic and Atmospheric Administration 2019</p> \n
                   <p>A comparison of forecast data from the NOAA's multigrid wave model and wave monitoring stations from Queensland Government</p> \n
                 </div>\n
