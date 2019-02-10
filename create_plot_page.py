@@ -106,7 +106,7 @@ def plot_bokeh_per(site_data):
     from bokeh.embed import file_html, components
     #fig = file_html(p, CDN)
     script, div = components(p)
-    show(p)
+    #show(p)
     return (script, div)
 
 
@@ -117,7 +117,7 @@ def generate_report():
     site_data = get_data()
     for d in site_data:
         plots.append(plot_bokeh(d))
-        plots.append(plot_bokeh_per(d))
+        #plots.append(plot_bokeh_per(d))
     
     #name = 'AUSWAVE Forecast Report ' + datetime.datetime.now().strftime("%Y-%m-%d_%H")+'.html'
     name = 'NOAA_Forecast_Report_online.html'
