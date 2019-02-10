@@ -28,7 +28,7 @@ import fetch_online_des_waves
 def build_urls():
     prevdate = dt.datetime.strftime(dt.datetime.utcnow() - dt.timedelta(days=1), "%Y%m%d")
     date = dt.datetime.strftime(dt.datetime.utcnow(), "%Y%m%d")
-    baseurl = 'http://nomads.ncep.noaa.gov:9090/dods/wave/mww3/'
+    baseurl = 'https://nomads.ncep.noaa.gov:9090/dods/wave/mww3/'
     runs = ['00','06','12','18']
     name = """/multi_1.glo_30mext"""
     
